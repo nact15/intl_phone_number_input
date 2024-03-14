@@ -57,27 +57,29 @@ class _Flag extends StatelessWidget {
   final bool? showFlag;
   final bool? useEmoji;
 
-  const _Flag({Key? key, this.country, this.showFlag, this.useEmoji})
-      : super(key: key);
+  const _Flag({Key? key, this.country, this.showFlag, this.useEmoji}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return country != null && showFlag!
-        ? Container(
-            child: useEmoji!
-                ? Text(
-                    Utils.generateFlagEmojiUnicode(country?.alpha2Code ?? ''),
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  )
-                : Image.asset(
-                    country!.flagUri,
-                    width: 32.0,
-                    package: 'intl_phone_number_input',
-                    errorBuilder: (context, error, stackTrace) {
-                      return SizedBox.shrink();
-                    },
-                  ),
-          )
+        ? useEmoji!
+            ? Text(
+                Utils.generateFlagEmojiUnicode(country?.alpha2Code ?? ''),
+                style: Theme.of(context).textTheme.headlineSmall,
+              )
+            : ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+                child: Image.asset(
+                  country!.flagUri,
+                  width: 32.0,
+                  height: 32,
+                  fit: BoxFit.cover,
+                  package: 'intl_phone_number_input',
+                  errorBuilder: (context, error, stackTrace) {
+                    return SizedBox.shrink();
+                  },
+                ),
+              )
         : SizedBox.shrink();
   }
 }
